@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import "./App.css";
 import Person from "./Person/Person";
+import Radium, { StyleRoot } from "radium";
 class App extends Component {
   state = {
     persons: [
@@ -57,11 +58,15 @@ class App extends Component {
       border: "3px solid blue",
       padding: "8px",
       cursor: "pointer",
+      ":hover": {
+        backgroundColor: "lightgreen",
+        color: "black",
+      },
     };
+
     let view = <div>I am empty</div>;
 
     if (this.state.showPersons) {
-      style.backgroundColor = "red";
       view = (
         <div>
           {this.state.persons.map((person, index) => {
@@ -78,16 +83,29 @@ class App extends Component {
         </div>
       );
     }
+
+    let classes = "";
+
+    if (this.state.persons.length <= 2) {
+      classes = "red";
+    }
+
+    if (this.state.persons.length <= 1) {
+      classes += classes + " bold";
+    }
+
     return (
-      <div className="App">
-        <h1>Hi, I am a react app</h1>
-        <button style={style} onClick={this.switchNameHandler}>
-          Switch Name
-        </button>
-        {view}
-      </div>
+      <StyleRoot>
+        <div className="App">
+          <h1 className={classes}> Hi, I am a react app</h1>
+          <button style={style} onClick={this.switchNameHandler}>
+            Switch Name
+          </button>
+          {view}
+        </div>
+      </StyleRoot>
     );
   }
 }
 
-export default App;
+export default Radium(App);
