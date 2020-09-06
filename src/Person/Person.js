@@ -1,7 +1,6 @@
 import React from "react";
 import "./person.css";
 const person = (props) => {
- 
   return (
     <div className="Person">
       <p onClick={props.click}>

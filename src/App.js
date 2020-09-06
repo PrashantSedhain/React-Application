@@ -4,44 +4,56 @@ import Person from "./Person/Person";
 class App extends Component {
   state = {
     persons: [
-      { name: "Prashant", age: 23 },
-      { name: "Abit", age: 22 },
-      { name: "Anish", age: 33 },
+      { id: "asdf", name: "Prashant", age: 23 },
+      { id: "dscds", name: "Abit", age: 22 },
+      { id: "cadcxs", name: "Anish", age: 33 },
     ],
   };
 
   switchNameHandler = () => {
-    console.log("Was clicked!!!");
-
     // DON'T MUTATE DIRECTLY LIKE THIS!
     // this.state.persons[0].name = "Prashant Sedhain";
 
     this.setState({
       persons: [
-        { name: "Prashant Sedhain ", age: 23 },
-        { name: "Abit", age: 22 },
-        { name: "Anish", age: 33 },
+        { id: "asdf", name: "Prashant Sedhain", age: 23 },
+        { id: "dscds", name: "Abit", age: 22 },
+        { id: "cadcxs", name: "Anish", age: 33 },
       ],
     });
   };
 
-  nameChangedHandler = (event) => {
+  nameChangedHandler = (event, id) => {
+    const personIndex = this.state.persons.findIndex((p) => {
+      return p.id === id;
+    });
+
+    console.log(personIndex);
+    const person = { ...this.state.persons[personIndex] };
+    person.name = event.target.value;
+
+    const persons = [...this.state.persons];
+    persons[personIndex] = person;
     this.setState({
-      persons: [
-        { name: event.target.value, age: 23 },
-        { name: "Abit", age: 22 },
-        { name: "Anish", age: 33 },
-      ],
+      persons: persons,
     });
   };
 
+  deletePersonHandler = (personIndex) => {
+    // Can be done this too:
+    // Array in java is mutable
+    // const persons = this.state.persons.slice();
+    const persons = [...this.state.persons];
+    persons.splice(personIndex, 1);
+    this.setState({ persons: persons });
+  };
   render() {
     const style = {
       backgroundColor: "white",
       font: "inherit",
       border: "3px solid blue",
       padding: "8px",
-      cursor: "pointer"
+      cursor: "pointer",
     };
 
     return (
@@ -50,21 +62,17 @@ class App extends Component {
         <button style={style} onClick={this.switchNameHandler}>
           Switch Name
         </button>
-
-        <Person
-          changed={this.nameChangedHandler}
-          name={this.state.persons[0].name}
-          age={this.state.persons[0].age}
-          click={this.switchNameHandler}
-        />
-        <Person
-          name={this.state.persons[1].name}
-          age={this.state.persons[1].age}
-        />
-        <Person
-          name={this.state.persons[2].name}
-          age={this.state.persons[2].age}
-        />
+        {this.state.persons.map((elem, index) => {
+          return (
+            <Person
+              changed={(event) => this.nameChangedHandler(event, elem.id)}
+              name={elem.name}
+              age={elem.age}
+              key={elem.id}
+              click={() => this.deletePersonHandler(index)}
+            />
+          );
+        })}
       </div>
     );
   }
