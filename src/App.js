@@ -8,6 +8,7 @@ class App extends Component {
       { id: "dscds", name: "Abit", age: 22 },
       { id: "cadcxs", name: "Anish", age: 33 },
     ],
+    showPersons: false,
   };
 
   switchNameHandler = () => {
@@ -20,6 +21,7 @@ class App extends Component {
         { id: "dscds", name: "Abit", age: 22 },
         { id: "cadcxs", name: "Anish", age: 33 },
       ],
+      showPersons: !this.state.showPersons,
     });
   };
 
@@ -28,7 +30,6 @@ class App extends Component {
       return p.id === id;
     });
 
-    console.log(personIndex);
     const person = { ...this.state.persons[personIndex] };
     person.name = event.target.value;
 
@@ -47,32 +48,43 @@ class App extends Component {
     persons.splice(personIndex, 1);
     this.setState({ persons: persons });
   };
+
   render() {
     const style = {
-      backgroundColor: "white",
+      backgroundColor: "green",
+      color: "white",
       font: "inherit",
       border: "3px solid blue",
       padding: "8px",
       cursor: "pointer",
     };
+    let view = <div>I am empty</div>;
 
+    if (this.state.showPersons) {
+      style.backgroundColor = "red";
+      view = (
+        <div>
+          {this.state.persons.map((person, index) => {
+            return (
+              <Person
+                click={() => this.deletePersonHandler(index)}
+                name={person.name}
+                age={person.age}
+                key={person.id}
+                changed={(event) => this.nameChangedHandler(event, person.id)}
+              />
+            );
+          })}
+        </div>
+      );
+    }
     return (
       <div className="App">
         <h1>Hi, I am a react app</h1>
         <button style={style} onClick={this.switchNameHandler}>
           Switch Name
         </button>
-        {this.state.persons.map((elem, index) => {
-          return (
-            <Person
-              changed={(event) => this.nameChangedHandler(event, elem.id)}
-              name={elem.name}
-              age={elem.age}
-              key={elem.id}
-              click={() => this.deletePersonHandler(index)}
-            />
-          );
-        })}
+        {view}
       </div>
     );
   }
