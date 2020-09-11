@@ -15,7 +15,12 @@ class App extends Component {
   switchNameHandler = () => {
     // DON'T MUTATE DIRECTLY LIKE THIS!
     // this.state.persons[0].name = "Prashant Sedhain";
-
+    let vText = "";
+    if (this.state.viewText === "Hide") {
+      vText = "Show";
+    } else {
+      vText = "Hide";
+    }
     this.setState({
       persons: [
         { id: "asdf", name: "Prashant Sedhain", age: 23 },
@@ -23,7 +28,7 @@ class App extends Component {
         { id: "cadcxs", name: "Anish", age: 33 },
       ],
       showPersons: !this.state.showPersons,
-      viewText: "Hide",
+      viewText: vText,
     });
   };
 
@@ -51,11 +56,18 @@ class App extends Component {
     this.setState({ persons: persons });
   };
 
+  // const p = [...this.state.persons];
+  // p.viewText = "Hide";
+  // this.setState({ persons: p });
+  test = () => {
+    const p = [...this.state.persons];
+    p.viewText = "Show";
+    this.setState({ persons: p });
+  };
   render() {
     let view = "";
 
     if (this.state.showPersons) {
-      this.state.viewText = "Hide";
       view = (
         <div>
           {this.state.persons.map((person, index) => {
@@ -71,8 +83,6 @@ class App extends Component {
           })}
         </div>
       );
-    } else {
-      this.state.viewText = "Show";
     }
 
     let classes = "";
