@@ -1,7 +1,6 @@
 import React, { Component } from "react";
-import "./App.css";
+import dynamicClasses from "./App.css";
 import Person from "./Person/Person";
-import Radium, { StyleRoot } from "radium";
 class App extends Component {
   state = {
     persons: [
@@ -10,6 +9,7 @@ class App extends Component {
       { id: "cadcxs", name: "Anish", age: 33 },
     ],
     showPersons: false,
+    viewText: "Show",
   };
 
   switchNameHandler = () => {
@@ -23,6 +23,7 @@ class App extends Component {
         { id: "cadcxs", name: "Anish", age: 33 },
       ],
       showPersons: !this.state.showPersons,
+      viewText: "Hide",
     });
   };
 
@@ -51,22 +52,10 @@ class App extends Component {
   };
 
   render() {
-    const style = {
-      backgroundColor: "green",
-      color: "white",
-      font: "inherit",
-      border: "3px solid blue",
-      padding: "8px",
-      cursor: "pointer",
-      ":hover": {
-        backgroundColor: "lightgreen",
-        color: "black",
-      },
-    };
-
-    let view = <div>I am empty</div>;
+    let view = "";
 
     if (this.state.showPersons) {
+      this.state.viewText = "Hide";
       view = (
         <div>
           {this.state.persons.map((person, index) => {
@@ -82,6 +71,8 @@ class App extends Component {
           })}
         </div>
       );
+    } else {
+      this.state.viewText = "Show";
     }
 
     let classes = "";
@@ -95,17 +86,18 @@ class App extends Component {
     }
 
     return (
-      <StyleRoot>
-        <div className="App">
-          <h1 className={classes}> Hi, I am a react app</h1>
-          <button style={style} onClick={this.switchNameHandler}>
-            Switch Name
-          </button>
-          {view}
-        </div>
-      </StyleRoot>
+      <div className={dynamicClasses.App}>
+        <h1> Hi, I am a react app</h1>
+        <button
+          className={dynamicClasses.button}
+          onClick={this.switchNameHandler}
+        >
+          {this.state.viewText}
+        </button>
+        {view}
+      </div>
     );
   }
 }
 
-export default Radium(App);
+export default App;
