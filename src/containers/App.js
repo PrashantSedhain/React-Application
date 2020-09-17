@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import dynamicClasses from "./App.css";
-import Person from "./Person/Person";
+import Persons from "../components/Persons/Persons";
+import Cockpit from "../components/Cockpit/Cockpit.js";
 class App extends Component {
   state = {
     persons: [
@@ -8,7 +8,7 @@ class App extends Component {
       { id: "dscds", name: "Abit", age: 22 },
       { id: "cadcxs", name: "Anish", age: 33 },
     ],
-    showPersons: false,
+    showPersons: true,
     viewText: "Show",
   };
 
@@ -56,9 +56,6 @@ class App extends Component {
     this.setState({ persons: persons });
   };
 
-  // const p = [...this.state.persons];
-  // p.viewText = "Hide";
-  // this.setState({ persons: p });
   test = () => {
     const p = [...this.state.persons];
     p.viewText = "Show";
@@ -70,40 +67,21 @@ class App extends Component {
     if (this.state.showPersons) {
       view = (
         <div>
-          {this.state.persons.map((person, index) => {
-            return (
-              <Person
-                click={() => this.deletePersonHandler(index)}
-                name={person.name}
-                age={person.age}
-                key={person.id}
-                changed={(event) => this.nameChangedHandler(event, person.id)}
-              />
-            );
-          })}
+          <Persons
+            persons={this.state.persons}
+            clicked={this.deletePersonHandler}
+            changed={this.nameChangedHandler}
+          />
         </div>
       );
     }
 
-    let classes = "";
-
-    if (this.state.persons.length <= 2) {
-      classes = "red";
-    }
-
-    if (this.state.persons.length <= 1) {
-      classes += classes + " bold";
-    }
-
     return (
-      <div className={dynamicClasses.App}>
-        <h1> Hi, I am a react app</h1>
-        <button
-          className={dynamicClasses.button}
-          onClick={this.switchNameHandler}
-        >
-          {this.state.viewText}
-        </button>
+      <div>
+        <Cockpit
+          clicked={this.switchNameHandler}
+          viewText={this.state.viewText}
+        ></Cockpit>
         {view}
       </div>
     );

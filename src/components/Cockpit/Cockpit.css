@@ -1,0 +1,30 @@
+.App {
+    text-align: center;
+  }
+  @media (min-width: 50px) {
+    .Person {
+      width: 450px;
+    }
+  }
+  */ .red {
+    color: red;
+  }
+  
+  .bold {
+    color: pink;
+  }
+  
+  .button {
+    background-color: green;
+    color: white;
+    font: inherit;
+    border: 3px solid blue;
+    padding: 8px;
+    cursor: pointer;
+  }
+  
+  .button:hover {
+    background-color: lightgreen;
+    color: black;
+  }
+  
